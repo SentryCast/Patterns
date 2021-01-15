@@ -1,6 +1,5 @@
 #include "Shop.h"
 
-
 const std::string& Shop::GetAddress() {
 	return _address;
 }
@@ -95,4 +94,33 @@ void ProductBuilder::Reset() {
 
 const std::vector<Product>& ProductBuilder::GetResult() {
 	return _products;
+}
+
+void Customer::BuyPack(Shop& shop, const std::string& productName, unsigned amount) {
+	unsigned localAmount = 0;
+	std::vector<int> savedPositions;
+	for (int i = 0; i < shop.GetAllProducts().size(); ++i) {
+		if (shop.GetProduct(i).first.GetName() == productName) {
+			localAmount++;
+			savedPositions.push_back(i);
+		}
+	}
+	if (localAmount > 0 && localAmount >= amount) {
+		for (int i = 0; i < savedPositions.size(); ++i) {
+			shop.GetAllProducts().erase(shop.GetAllProducts().begin() + savedPositions[i]);
+		}
+		std::cout << this->GetName() << " bought " << localAmount << " items of product " 
+			<< productName << std::endl;
+	}
+	else if (localAmount > 0) {
+		std::cout << "Not enough products in this shop: " << shop.GetName() << ". Found: " << localAmount 
+			<< std::endl;
+	}
+	else {
+		std::cout << "Have not found any products in this shop: " << shop.GetName() << std::endl;
+	}
+}
+
+const std::string& Customer::GetName() {
+	return _name;
 }

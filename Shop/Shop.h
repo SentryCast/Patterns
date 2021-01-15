@@ -51,6 +51,14 @@ public:
 	void EditProductPrice(unsigned productPosition, int newPrice);
 	void ClearProducts();
 
+	std::pair<Product, int>& GetProduct(unsigned position) {
+		return _products[position];
+	}
+
+	std::vector<std::pair<Product, int>>& GetAllProducts() {
+		return _products;
+	}
+
 	void operator=(const Shop& shop) {
 		_id = shop._id;
 		_name = shop._name;
@@ -94,6 +102,21 @@ public:
 	const std::vector<Product>& GetResult();
 private:
 	std::vector<Product> _products;
+};
+
+// Exists only for Task 6
+class Customer {
+public:
+	Customer(std::string name)
+		: _name(name)
+		, _id(boost::uuids::random_generator()())
+	{}
+
+	const std::string& GetName();
+	void BuyPack(Shop& shop, const std::string& productName, unsigned amount); // Task 6
+private:
+	std::string _name;
+	uuid _id;
 };
 
 
